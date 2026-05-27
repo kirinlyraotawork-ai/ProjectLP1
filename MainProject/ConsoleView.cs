@@ -34,7 +34,7 @@ namespace MainProject
                 header += $"{col + 1}  ";
             }
             AnsiConsole.WriteLine(header);
-            AnsiConsole.WriteLine("   " + new string('-', board.Size * 4 + 1));
+            AnsiConsole.WriteLine("   " + new string('_', board.Size * 4 - 2));
 
             for (int row = 0; row < board.Size; row++)
             {
