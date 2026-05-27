@@ -32,14 +32,20 @@ namespace MainProject
         /// <summary> Shows the menu, runs the game loop </summary>
         public void Run()
         {
+
             bool playAgain = true;
             while (playAgain)
             {
+                //get the difficulty from ShowMainMenu
+                //puts said difficulty in a new board
                 Difficulty difficulty = view.ShowMainMenu();
                 board = new(difficulty);
 
                 PlayGame();
 
+                //when the player wins, leaves PlayGame and comes back here,
+                //show the Victory screen using the player's moves,
+                //then asks the player to play again or not
                 view.ShowVictory(board.Moves);
                 playAgain = view.AskToPlayAgain();
 
@@ -50,17 +56,22 @@ namespace MainProject
         /// <summary>The game loop in a do while </summary>
         private void PlayGame()
         {
+            //as long as the player hasn't won the game, this do while continues
             do
             {
-                view.DrawBoard(board);
-                (int row, int col) = view.GetPlayerMove(board.Size);
 
-                if(row == -1 && col == -1)
+                view.DrawBoard(board);
+                //tuple that gets the player's input
+                (int row, int col) = view.GetPlayerMove(board.Size);
+                //when player writes "Quit", this if restarts the main menu
+                //and lets the player choose a different difficulty
+                if (row == -1 && col == -1)
                 {
                     Difficulty dif = view.ShowMainMenu();
-                    board = new Board(dif);
+                    board = new(dif);
                     continue;
                 }
+                //uses the tuple above to click on the board
                 board.PlayerClick(row, col);
             } while (!board.IsWon);
         }

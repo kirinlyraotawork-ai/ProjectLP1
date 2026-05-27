@@ -18,8 +18,6 @@ namespace MainProject
         /// Asks the player to pick a row and column to click.
         /// </summary>
         /// <param name="size">Grid size, used to validate input.</param>
-        /// <param name="row">Output row.</param>
-        /// <param name="col">Output column.</param>
         (int row, int col) GetPlayerMove(int size);
 
         /// <summary>Displays the victory screen.</summary>

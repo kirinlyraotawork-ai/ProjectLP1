@@ -12,8 +12,8 @@ namespace MainProject
     public class ConsoleView : IView
     {
         // -----private variables and properties-----
-        private const string CellOnColour = "springgreen3";
-        private const string CellOffColour = "DarkRed";
+        private const string CellOnColor = "springgreen3";
+        private const string CellOffColor = "DarkRed";
 
 
         // -----methods-----
@@ -25,43 +25,58 @@ namespace MainProject
         }
         public void DrawBoard(Board board)
         {
+            //clear and print the moves to the player
             AnsiConsole.Clear();
             AnsiConsole.MarkupLine($"Moves: {board.Moves}\n");
 
+            //Column Header
+            //has 5 spaces to align the numbers to the grid
+            //loops through each column and adds its correct number (1,2,3,...)
             string header = "     ";
             for (int col = 0; col < board.Size; col++)
             {
                 header += $"{col + 1}  ";
             }
             AnsiConsole.WriteLine(header);
+
+            //separator line between the board and the numbers
             AnsiConsole.WriteLine("   " + new string('_', board.Size * 4 - 2));
 
             for (int row = 0; row < board.Size; row++)
             {
+                //draws each row with a │ line too
                 string line = $"{row + 1}  │ ";
+
+                //going through a 2nd for in the for to be able to draw
+                //each cell in the game board
                 for (int col = 0; col < board.Size; col++)
                 {
+                    // check each cell to see if its on or off
                     bool cellOn = board.GetCellState(row, col);
                     string color;
-
+                    //changes color to green if cell is on, otherwise changes to red
                     if (cellOn)
-                        color = CellOnColour;
+                        color = CellOnColor;
                     else
-                        color = CellOffColour;
-
+                        color = CellOffColor;
+                    // adds the new cell with the color
                     line += $"[{color}]██[/] ";
                 }
+                //prints the cell
                 AnsiConsole.MarkupLine(line);
             }
-            AnsiConsole.MarkupLine("\n[grey][[bright green]] = ON   [[dark red]] = OFF  Quit by writing 'Quit'[/]");
+            //shows the player what the colors means, and how to quit
+            AnsiConsole.MarkupLine($"\n[{CellOnColor}] bright green = ON [/]  [{CellOffColor}]dark red = OFF [/] [grey] Quit by writing 'Quit'[/]");
         }
 
         public (int row, int col) GetPlayerMove(int size)
         {
-            AnsiConsole.WriteLine($"Enter a cell to toggle (row column, e.g. 2 3):");
+            //tells player how to toggle cells
+            AnsiConsole.WriteLine($"Enter a cell to toggle (row column, e.g. 1 3):");
 
             while (true)
             {
+                //reads player input
                 string input = Console.ReadLine();
 
                 if (input != null)
@@ -71,12 +86,13 @@ namespace MainProject
                 }
                 else
                 {
+                    //gives the input an empty string, will go into the wrong input line
                     input = "";
                 }
 
-                if(input == "Quit")
+                if (input == "Quit")
                 {
-                    //use this in PlayGame() to reset the board and go back to main menu
+                    //use this in PlayGame() in controller to reset the board and go back to main menu
                     return (-1, -1);
                 }
 
@@ -87,6 +103,7 @@ namespace MainProject
                 && int.TryParse(parts[0], out int row) && row >= 1 && row <= size
                 && int.TryParse(parts[1], out int col) && col >= 1 && col <= size)
                 {
+                    //player puts "1 1", becomes position 0 0 (since arrays start with index 0)
                     row--;
                     col--;
                     return (row, col);
