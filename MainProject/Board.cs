@@ -99,12 +99,21 @@ namespace MainProject
             ToggleCell(row, col);
             //cell above
             ToggleCell(row - 1, col);
+            //cell above left
+            ToggleCell(row - 1, col-1);
             //cell below
             ToggleCell(row + 1, col);
+            //cell below left
+            ToggleCell(row + 1, col -1);
             //cell to the left
             ToggleCell(row, col - 1);
             //cell to the right
             ToggleCell(row, col + 1);
+            //cell above right
+            ToggleCell(row -1, col + 1);
+            //cell below left
+            ToggleCell(row + 1, col +1);
+            
             Moves++;
         }
 
