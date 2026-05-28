@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,6 +22,11 @@ namespace MainProject
 /// 
         private Dictionary<Difficulty, int> highScores = new();
         private Difficulty currentDifficulty;
+
+        private int bestScore;
+
+
+
 /// <summary>
 
 
@@ -34,28 +40,7 @@ namespace MainProject
         }
 
         /// <summary> Shows the menu, runs the game loop </summary>
-/*        public void Run()
-        {
 
-            bool playAgain = true;
-            while (playAgain)
-            {
-                //get the difficulty from ShowMainMenu
-                //puts said difficulty in a new board
-                Difficulty difficulty = view.ShowMainMenu();
-                board = new(difficulty);
-
-                PlayGame();
-
-                //when the player wins, leaves PlayGame and comes back here,
-                //show the Victory screen using the player's moves,
-                //then asks the player to play again or not
-                view.ShowVictory(board.Moves);
-                playAgain = view.AskToPlayAgain();
-
-            }
-
-        }*/
 
         public void Run()
         {
@@ -65,7 +50,7 @@ namespace MainProject
                 currentDifficulty = view.ShowMainMenu(highScores);
                 board = new(currentDifficulty);
 
-                PlayGame();
+                PlayGame(bestScore);
 
                 if (!highScores.ContainsKey(currentDifficulty) || board.Moves < highScores[currentDifficulty])
                     highScores[currentDifficulty] = board.Moves;
@@ -77,13 +62,13 @@ namespace MainProject
         }
 
         /// <summary>The game loop in a do while </summary>
-        private void PlayGame()
+        private void PlayGame(int bestScore)
         {
             //as long as the player hasn't won the game, this do while continues
             do
             {
 
-                view.DrawBoard(board);
+                view.DrawBoard(board, bestScore);
                 //tuple that gets the player's input
                 (int row, int col) = view.GetPlayerMove(board.Size);
                 //when player writes "Quit", this if restarts the main menu

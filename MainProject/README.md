@@ -41,7 +41,7 @@ When the player selects a cell at position *(row, col)*, that cell and its 4 adj
 
 #### Win Condition
 
-After every click, the board scans every cell. If any cell is still *ON*, the game continues. Only when all cells are *OFF* does the game end and the victory screen appear.
+After every click, the board scans every cell. If any cell is still *ON*, the game continues. Only when all cells are *OFF* does the game end and the victory screen appear. If your Score is the best within all the played rounds, if will be saved as a *highscore*.
 
 #### Input Validation
 The player's input is read as a string, then trimmed of whitespace. It is then split on spaces and each part is parsed as an integer using *int.TryParse*, (which handles non-numeric input safely without throwing exceptions.) Both numbers are checked if they are within the valid grid range before being accepted.

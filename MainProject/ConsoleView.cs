@@ -15,6 +15,8 @@ namespace MainProject
         private const string CellOnColor = "springgreen3";
         private const string CellOffColor = "DarkRed";
 
+        public int bestScore;
+
 
         // -----methods-----
         public bool AskToPlayAgain()
@@ -23,11 +25,12 @@ namespace MainProject
             //with either y/n, returning a true or false respectively
             return AnsiConsole.Confirm($"Play again?");
         }
-        public void DrawBoard(Board board)
+        public void DrawBoard(Board board, int bestScore)
         {
             //clear and print the moves to the player
             AnsiConsole.Clear();
             AnsiConsole.MarkupLine($"Moves: {board.Moves}\n");
+            AnsiConsole.MarkupLine($"[grey]Best score for this difficulty: {bestScore} moves[/]\n");
 
             //Column Header
             //has 5 spaces to align the numbers to the grid
@@ -125,15 +128,7 @@ namespace MainProject
                 .Centered()
                 .Color(Color.Purple4));
 
-/*        public Difficulty ShowMainMenu()
-        {
-            //clears the screen from previous stuff
-            AnsiConsole.Clear();
-            //creates the title logo
-            AnsiConsole.Write(
-            new FigletText("BLACKOUT")
-                .Centered()
-                .Color(Color.Purple4));*/
+
                 
 
             // Menu choice to play or quit the program
@@ -185,34 +180,9 @@ namespace MainProject
             
         }
 
-/*        public void ShowVictory(int moves)
-        {
-            //clears the screen from previous stuff
-            AnsiConsole.Clear();
-            //draws the win screen, the same way as the title logo
-            AnsiConsole.Write(
-                new FigletText("YOU WIN!")
-                    .Centered()
-                    .Color(Color.Cyan2));
 
-            //bold springgreen1 is a color for ansiconsole. 
-            //"[/]" stops that color from being used on the rest of the text
-            AnsiConsole.MarkupLine($"\n[bold springgreen1]Congrats![/] You solved the board in {moves}.\n");
-        }*/
 
-/*        public void ShowVictory(int moves, bool isNewBest)
-        {
-            AnsiConsole.Clear();
-            AnsiConsole.Write(
-                new FigletText("YOU WIN!")
-                    .Centered()
-                    .Color(Color.Cyan2));
 
-            AnsiConsole.MarkupLine($"\n[bold springgreen1]Congrats![/] You solved the board in {moves} moves.\n");
-
-            if (isNewBest)
-                AnsiConsole.MarkupLine($"[bold yellow]New Best Score![/]\n");
-        }*/
 
         public void ShowVictory(int moves, bool isNewBest, int bestScore)
         {

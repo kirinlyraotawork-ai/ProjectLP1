@@ -12,7 +12,7 @@ namespace MainProject
 
         /// <summary>Draws the current board state.</summary>
         /// <param name="board">The board to display.</param>
-        void DrawBoard(Board board);
+        void DrawBoard(Board board, int bestScore);
 
         /// <summary>
         /// Asks the player to pick a row and column to click.
