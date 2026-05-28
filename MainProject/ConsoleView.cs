@@ -125,7 +125,7 @@ namespace MainProject
                 .Color(Color.Purple4));
 
             // Menu choice to play or quit the program
-            var choice = AnsiConsole.Prompt(
+            string choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title($"[blue]Main Menu[/]")
                     .AddChoices("Play", "How To Play", "Quit"));
@@ -146,7 +146,7 @@ namespace MainProject
             }
 
             //if player chooses play, new screen with 3 difficulties to choose from
-            var difficulty = AnsiConsole.Prompt(
+            string difficulty = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title($"\n[blue]Choose difficulty:[/]")
                     .AddChoices("Easy (3×3)", "Medium (5×5)", "Hard (8×8)"));
@@ -182,7 +182,7 @@ namespace MainProject
             AnsiConsole.Clear();
             //creates a panel for the rules to be displayed
             // @"" is called verbatim text, useful for new lines without /n breaks
-            var panel = new Panel(
+            Panel panel = new Panel(
              @"[bold underline]How to Play BLACKOUT[/]
 
             - The grid starts with some cells [springgreen3]ON[/].
