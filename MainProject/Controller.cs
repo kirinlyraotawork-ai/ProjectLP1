@@ -18,6 +18,10 @@ namespace MainProject
 
         /// <summary> the view used for UI and Input </summary>
         private IView view;
+/// 
+        private Dictionary<Difficulty, int> highScores = new();
+        private Difficulty currentDifficulty;
+/// <summary>
 
 
         // -----methods and construct-----
@@ -30,7 +34,7 @@ namespace MainProject
         }
 
         /// <summary> Shows the menu, runs the game loop </summary>
-        public void Run()
+/*        public void Run()
         {
 
             bool playAgain = true;
@@ -51,6 +55,25 @@ namespace MainProject
 
             }
 
+        }*/
+
+        public void Run()
+        {
+            bool playAgain = true;
+            while (playAgain)
+            {
+                currentDifficulty = view.ShowMainMenu(highScores);
+                board = new(currentDifficulty);
+
+                PlayGame();
+
+                if (!highScores.ContainsKey(currentDifficulty) || board.Moves < highScores[currentDifficulty])
+                    highScores[currentDifficulty] = board.Moves;
+
+                //view.ShowVictory(board.Moves, highScores[currentDifficulty] == board.Moves);
+                view.ShowVictory(board.Moves, highScores[currentDifficulty] == board.Moves, highScores[currentDifficulty]);
+                playAgain = view.AskToPlayAgain();
+            }
         }
 
         /// <summary>The game loop in a do while </summary>
@@ -67,7 +90,7 @@ namespace MainProject
                 //and lets the player choose a different difficulty
                 if (row == -1 && col == -1)
                 {
-                    Difficulty dif = view.ShowMainMenu();
+                    Difficulty dif = view.ShowMainMenu(highScores);
                     board = new(dif);
                     continue;
                 }
@@ -75,5 +98,7 @@ namespace MainProject
                 board.PlayerClick(row, col);
             } while (!board.IsWon);
         }
+
+        
     }
 }

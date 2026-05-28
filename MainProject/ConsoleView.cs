@@ -114,7 +114,8 @@ namespace MainProject
             }
         }
 
-        public Difficulty ShowMainMenu()
+
+        public Difficulty ShowMainMenu(Dictionary<Difficulty, int> highScores)
         {
             //clears the screen from previous stuff
             AnsiConsole.Clear();
@@ -124,11 +125,23 @@ namespace MainProject
                 .Centered()
                 .Color(Color.Purple4));
 
+/*        public Difficulty ShowMainMenu()
+        {
+            //clears the screen from previous stuff
+            AnsiConsole.Clear();
+            //creates the title logo
+            AnsiConsole.Write(
+            new FigletText("BLACKOUT")
+                .Centered()
+                .Color(Color.Purple4));*/
+                
+
             // Menu choice to play or quit the program
-            string choice = AnsiConsole.Prompt(
+            var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title($"[blue]Main Menu[/]")
-                    .AddChoices("Play", "How To Play", "Quit"));
+                    //.AddChoices("Play", "How To Play", "Quit"));
+                    .AddChoices("Play", "How To Play", "High Scores", "Quit"));
 
             if (choice == "Quit")
             {
@@ -142,11 +155,16 @@ namespace MainProject
                 ShowRules();
                 //needs ShowMainMenu needs to return a Difficulty value,
                 //so we just return itself again.
-                return ShowMainMenu();
+                return ShowMainMenu(highScores);
             }
+            if (choice == "High Scores")
+            {
+                ShowHighScores(highScores);
+                return ShowMainMenu(highScores);
+            }///
 
             //if player chooses play, new screen with 3 difficulties to choose from
-            string difficulty = AnsiConsole.Prompt(
+            var difficulty = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title($"\n[blue]Choose difficulty:[/]")
                     .AddChoices("Easy (3×3)", "Medium (5×5)", "Hard (8×8)"));
@@ -161,9 +179,13 @@ namespace MainProject
                 // Which in this case is only when hard is chosen
                 _ => Difficulty.Hard,
             };
+
+///
+///     
+            
         }
 
-        public void ShowVictory(int moves)
+/*        public void ShowVictory(int moves)
         {
             //clears the screen from previous stuff
             AnsiConsole.Clear();
@@ -176,13 +198,43 @@ namespace MainProject
             //bold springgreen1 is a color for ansiconsole. 
             //"[/]" stops that color from being used on the rest of the text
             AnsiConsole.MarkupLine($"\n[bold springgreen1]Congrats![/] You solved the board in {moves}.\n");
+        }*/
+
+/*        public void ShowVictory(int moves, bool isNewBest)
+        {
+            AnsiConsole.Clear();
+            AnsiConsole.Write(
+                new FigletText("YOU WIN!")
+                    .Centered()
+                    .Color(Color.Cyan2));
+
+            AnsiConsole.MarkupLine($"\n[bold springgreen1]Congrats![/] You solved the board in {moves} moves.\n");
+
+            if (isNewBest)
+                AnsiConsole.MarkupLine($"[bold yellow]New Best Score![/]\n");
+        }*/
+
+        public void ShowVictory(int moves, bool isNewBest, int bestScore)
+        {
+            AnsiConsole.Clear();
+            AnsiConsole.Write(
+            new FigletText("YOU WIN!")
+                    .Centered()
+                    .Color(Color.Cyan2));
+
+            AnsiConsole.MarkupLine($"\n[bold springgreen1]Congrats![/] You solved the board in {moves} moves.\n");
+
+            if (isNewBest)
+                AnsiConsole.MarkupLine($"[bold yellow]New Best Score![/]\n");
+            else
+                AnsiConsole.MarkupLine($"[grey]Best score for this difficulty: {bestScore} moves[/]\n");
         }
         public void ShowRules()
         {
             AnsiConsole.Clear();
             //creates a panel for the rules to be displayed
             // @"" is called verbatim text, useful for new lines without /n breaks
-            Panel panel = new Panel(
+            var panel = new Panel(
              @"[bold underline]How to Play BLACKOUT[/]
 
             - The grid starts with some cells [springgreen3]ON[/].
@@ -202,6 +254,29 @@ namespace MainProject
             AnsiConsole.WriteLine($"\n Press ENTER to return...");
             Console.ReadLine();
 
+        }
+/// <summary>
+/// 
+/// </summary>
+/// <param name="moves"></param>
+/// <param name="isNewBest"></param>
+
+        private void ShowHighScores(Dictionary<Difficulty, int> highScores)
+        {
+            AnsiConsole.Clear();
+            var table = new Table();
+            table.AddColumn("[blue]Difficulty[/]");
+            table.AddColumn("[blue]Best Moves[/]");
+
+            foreach (Difficulty diff in Enum.GetValues(typeof(Difficulty)))
+            {
+                string score = highScores.ContainsKey(diff) ? highScores[diff].ToString() : "-";
+                table.AddRow(diff.ToString(), score);
+            }
+
+            AnsiConsole.Write(table);
+            AnsiConsole.WriteLine("\n Press ENTER to return...");
+            Console.ReadLine();
         }
     }
 }
